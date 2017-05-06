@@ -16,9 +16,4 @@ redmine:
         'etc': 13  # Other
         }
 
-# if debug == True - print additional information
-# possible levels: 1, 2, 3
-# 1 - print only information that will be added to redmine
-# 2 - print each entry from toggle
-# 3 - print full report from toggle
-debug: 3
+days: 7 # number of days to sync, 0 just for today
