@@ -1,0 +1,24 @@
+# YAML config
+
+toggl:
+    api_token: # API token can be found in toggl profile https://toggl.com/app/profile
+
+redmine:
+    url: # Redmine URL
+    token: # Redmine user token can be found in /my/account "API access key"
+    # Map activity types
+    activity = {
+        'dsg': 8,  # Design
+        'dev': 9,  # Development
+        'qa': 10,  # QA
+        'sa': 11,  # System Administration
+        'ap': 12,  # Research, Analytics, Planning
+        'etc': 13  # Other
+        }
+
+# if debug == True - print additional information
+# possible levels: 1, 2, 3
+# 1 - print only information that will be added to redmine
+# 2 - print each entry from toggle
+# 3 - print full report from toggle
+debug: 3
