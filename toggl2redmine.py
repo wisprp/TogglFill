@@ -1,9 +1,11 @@
 from TogglPy.TogglPy import Toggl
 from redmine import Redmine
+from copy import copy
 import datetime
 import math
 import logging
 import yaml  # PyYAML
+
 
 logging.basicConfig(level=logging.WARN)
 
@@ -80,6 +82,15 @@ def put2redmine(entry):
                               activity_id=activity[entry['project']],
                               comments=entry['comments']
                               )
+# update time entries in redmine
+def update2redmine(entry):
+    r = redmine.time_entry.filter(spent_on=date_start,
+                                       issue_id=entry['issue'],
+                                       activity_id=activity[entry['project']],
+                                       comments=entry['comments'],
+                                       user_id=int(redmine_user))
+    r.update(hours=entry['time'])
+
 
 
 def get_toggle_raw_report_data(day):
@@ -126,20 +137,40 @@ while date_start <= date_end:
                         'client': cfg['toggl']['client'],
                         'project': inv_activity[int(e.activity)]
                         } for e in r]
+
+    short_redmine_entries = [{'issue': str(e.issue),
+                            'comments': str(e.comments),
+                            'client': cfg['toggl']['client'],
+                            'project': inv_activity[int(e.activity)]
+                            } for e in r]
     print(date_start)
     logging.debug('Current redmine entries:')
     logging.debug(redmine_entries)
 
+    # add new entry if it's not in redmine yet
+    # for each tracked entry
     for entry in report:
+        # if it's not in redmine yet
         if entry not in redmine_entries:
-            logging.info(entry)
-
-            try:
-                put2redmine(entry)
-                logging.info('new entry: '+str(entry))
+            # a little hack to get rid from time in entry
+            short_entry = copy(entry)
+            short_entry.pop('time', None)
+            # and doesn't have different time
+            if short_entry not in short_redmine_entries:
+                # debug
                 print(entry)
-            except:
-                pass
+                print(short_redmine_entries)
+                logging.info(entry)
+                try:
+                    put2redmine(entry)
+                    logging.info('new entry: '+str(entry))
+                    print(entry)
+                except:
+                    pass
+            # if it's with different time: update the record instead adding new
+            else:
+                print('updating time for ' + str(entry))
+                update2redmine(entry)
         else:
             print('entry already in: ' + str(entry))
 

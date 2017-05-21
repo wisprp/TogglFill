@@ -1,0 +1,3 @@
+[submodule "TogglPy"]
+	path = TogglPy
+	url = git@github.com:wisprp/TogglPy.git
