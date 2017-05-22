@@ -157,9 +157,6 @@ while date_start <= date_end:
             short_entry.pop('time', None)
             # and doesn't have different time
             if short_entry not in short_redmine_entries:
-                # debug
-                print(entry)
-                print(short_redmine_entries)
                 logging.info(entry)
                 try:
                     put2redmine(entry)
