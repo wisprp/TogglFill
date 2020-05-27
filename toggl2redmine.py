@@ -1,5 +1,5 @@
 from TogglPy.TogglPy import Toggl
-from redmine import Redmine
+from redminelib import Redmine
 from copy import copy
 import datetime
 import math
