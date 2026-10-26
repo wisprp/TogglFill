@@ -1,6 +1,6 @@
 certifi==2023.7.22
 chardet==3.0.4
-idna==2.9
+idna==3.15
 python-redmine==2.3.0
 PyYAML==5.4
 requests==2.31.0
